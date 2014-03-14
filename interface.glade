@@ -175,7 +175,8 @@
                         <child>
                           <object class="GtkLabel" id="label_command">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Command line :</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Command line :&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
                             <property name="position">0</property>
@@ -207,43 +208,63 @@
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel" id="Population Size">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Population SIze</property>
-                        <property name="justify">center</property>
-                      </object>
-                      <packing>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="entry_popsize">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">&#x25CF;</property>
-                        <signal name="activate" handler="entry_popsize_activate"/>
-                      </object>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkVBox" id="vbox2">
+                      <object class="GtkVBox" id="vbox6">
                         <property name="visible">True</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkLabel" id="error_popsize">
+                          <object class="GtkLabel" id="Population Size">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes"> </property>
+                            <property name="label" translatable="yes">&lt;span size="x-large"&gt;Population Size&lt;/span&gt;</property>
+                            <property name="use_markup">True</property>
+                            <property name="justify">center</property>
                           </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkEntry" id="entry_popsize">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">&#x25CF;</property>
+                            <signal name="activate" handler="entry_popsize_activate"/>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="error_popsize">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes"> </property>
+                          </object>
+                          <packing>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkVBox" id="vbox7">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <child>
                           <object class="GtkLabel" id="Demes">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Demes</property>
+                            <property name="label" translatable="yes">&lt;span size="x-large"&gt;Demes&lt;/span&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="nb_demes">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Change the number of demes</property>
                           </object>
                           <packing>
                             <property name="position">1</property>
@@ -283,6 +304,80 @@
                             <property name="position">2</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkLabel" id="error_demes">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes"> </property>
+                          </object>
+                          <packing>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="select_deme">
+                            <property name="visible">True</property>
+                            <property name="xpad">6</property>
+                            <property name="label" translatable="yes">Select a deme</property>
+                          </object>
+                          <packing>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBox" id="deme_select">
+                            <property name="visible">True</property>
+                            <property name="border_width">13</property>
+                          </object>
+                          <packing>
+                            <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="change_deme_size">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes"> </property>
+                          </object>
+                          <packing>
+                            <property name="position">6</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkVBox" id="vbox2">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel" id="migration">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;span size="x-large"&gt;Migration&lt;/span&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <object class="GtkVBox" id="vbox5">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="position">2</property>
@@ -293,13 +388,7 @@
                         <property name="visible">True</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkLabel" id="error_demes">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes"> </property>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
+                          <placeholder/>
                         </child>
                         <child>
                           <placeholder/>
@@ -336,4 +425,6 @@
       </object>
     </child>
   </object>
+  <object class="GtkListStore" id="liststore1"/>
+  <object class="GtkListStore" id="liststore2"/>
 </interface>
