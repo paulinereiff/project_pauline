@@ -326,19 +326,52 @@
                         <child>
                           <object class="GtkComboBox" id="deme_select">
                             <property name="visible">True</property>
-                            <property name="border_width">13</property>
+                            <property name="model">liststore1</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                              <attributes>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
                           </object>
                           <packing>
                             <property name="position">5</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="change_deme_size">
+                          <object class="GtkHBox" id="hbox2">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes"> </property>
+                            <child>
+                              <object class="GtkLabel" id="change_deme_size">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes"> Change the size of the Deme:</property>
+                              </object>
+                              <packing>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="entry_deme_size">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">&#x25CF;</property>
+                                <signal name="activate" handler="entry_deme_size_activate"/>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="error_demesize">
+                            <property name="visible">True</property>
+                          </object>
+                          <packing>
+                            <property name="position">7</property>
                           </packing>
                         </child>
                       </object>
@@ -425,6 +458,10 @@
       </object>
     </child>
   </object>
-  <object class="GtkListStore" id="liststore1"/>
-  <object class="GtkListStore" id="liststore2"/>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
 </interface>
