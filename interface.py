@@ -22,8 +22,16 @@ class Interface:
 		self.deme_select = interface.get_object("deme_select")
 		self.error_demesize = interface.get_object("error_demesize")
 		
+		self.drawing_area = interface.get_object("drawingarea")
+		
+		self.drawing_area.set_events(gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.POINTER_MOTION_HINT_MASK )
+		self.drawing_area.connect("expose-event", self.drawing_refresh)
+        
+	    
+		
 		interface.connect_signals(self)
 		self.info_refresh()
+		
 
 	def on_mainWindow_destroy(self, widget):
 		gtk.main_quit()
@@ -52,7 +60,8 @@ class Interface:
 			self.info_refresh()
 			
 	def info_refresh(self):
-	
+		
+		""" command line refresh """
 		line = '-ms ' + str(self.pop_size) 
 		
 		if self.nb_demes > 0:
@@ -66,6 +75,7 @@ class Interface:
 		
 		self.command_line.set_text(line)
 		
+		""" Text refresh """
 		chaine = 'Population size is ' + str(self.pop_size)
 		
 		
@@ -82,6 +92,22 @@ class Interface:
 			
 			self.info.set_text(chaine)
 		
+		
+                                       
+	def drawing_refresh(self,drawing_area,event):
+		""" Drawing refresh """
+		self.gc = self.drawing_area.window.new_gc()
+		
+	 	#couleur = gtk.gdk.color_parse('navajo white')
+		#self.gc.background = gtk.gdk.color_parse()
+		
+		self.drawing_area.window.draw_rectangle(self.gc, True , 40, 20, 100, 40)
+		self.drawing_area.window.draw_line(self.gc, 50, 100, 50, 300)
+		self.drawing_area.window.draw_line(self.gc, 100, 100, 100, 300)
+		self.drawing_area.window.draw_line(self.gc, 150, 100, 150, 300)
+		self.drawing_area.window.draw_line(self.gc, 200, 100, 200, 300)
+		
+
 	def deme_plus_clicked(self, widget):
 	
 		self.nb_demes += 1

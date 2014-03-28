@@ -3,6 +3,8 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="fenetre principale">
+    <property name="width_request">800</property>
+    <property name="height_request">800</property>
     <property name="visible">True</property>
     <property name="title" translatable="yes">Mon super programme</property>
     <signal name="destroy" handler="on_mainWindow_destroy"/>
@@ -149,6 +151,8 @@
         </child>
         <child>
           <object class="GtkVBox" id="conteneurs barre de statuts">
+            <property name="width_request">750</property>
+            <property name="height_request">800</property>
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
@@ -159,35 +163,32 @@
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel" id="info">
+                      <object class="GtkVBox" id="vbox1">
+                        <property name="width_request">400</property>
+                        <property name="height_request">750</property>
                         <property name="visible">True</property>
-                        <property name="xalign">0.41999998688697815</property>
-                        <property name="xpad">4</property>
-                        <property name="wrap">True</property>
-                      </object>
-                      <packing>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkHBox" id="hbox3">
-                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkLabel" id="label_command">
+                          <object class="GtkLabel" id="info">
+                            <property name="width_request">400</property>
+                            <property name="height_request">200</property>
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Command line :&lt;/b&gt;</property>
-                            <property name="use_markup">True</property>
+                            <property name="xalign">0</property>
+                            <property name="yalign">0</property>
+                            <property name="xpad">20</property>
+                            <property name="ypad">20</property>
+                            <property name="wrap">True</property>
+                            <property name="max_width_chars">50</property>
                           </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="command_line">
+                          <object class="GtkDrawingArea" id="drawingarea">
+                            <property name="width_request">400</property>
+                            <property name="height_request">500</property>
                             <property name="visible">True</property>
-                            <property name="xalign">0.56999999284744263</property>
-                            <property name="label" translatable="yes"> </property>
-                            <property name="selectable">True</property>
                           </object>
                           <packing>
                             <property name="position">1</property>
@@ -195,7 +196,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="position">1</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                   </object>
@@ -205,7 +206,10 @@
                 </child>
                 <child>
                   <object class="GtkVBox" id="conteneurs des commandes">
+                    <property name="width_request">400</property>
+                    <property name="height_request">743</property>
                     <property name="visible">True</property>
+                    <property name="border_width">10</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkVBox" id="vbox6">
@@ -219,6 +223,7 @@
                             <property name="justify">center</property>
                           </object>
                           <packing>
+                            <property name="padding">10</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -258,6 +263,7 @@
                             <property name="use_markup">True</property>
                           </object>
                           <packing>
+                            <property name="padding">10</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -390,6 +396,7 @@
                             <property name="use_markup">True</property>
                           </object>
                           <packing>
+                            <property name="padding">10</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -434,9 +441,6 @@
                         <property name="position">3</property>
                       </packing>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -448,7 +452,46 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkHBox" id="hbox3">
+                <property name="width_request">400</property>
+                <property name="height_request">50</property>
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkLabel" id="label_command">
+                    <property name="width_request">200</property>
+                    <property name="height_request">50</property>
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="xpad">20</property>
+                    <property name="ypad">20</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Command line :&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="command_line">
+                    <property name="width_request">600</property>
+                    <property name="height_request">50</property>
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="xpad">20</property>
+                    <property name="ypad">20</property>
+                    <property name="label" translatable="yes"> </property>
+                    <property name="selectable">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
