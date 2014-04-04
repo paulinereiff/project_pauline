@@ -2,7 +2,7 @@ import pygtk
 pygtk.require("2.0")
 import gtk
 import deme
-
+import math
 
 class Interface:
 	def __init__(self):
@@ -20,13 +20,22 @@ class Interface:
 		self.command_line = interface.get_object("command_line")
 		self.change_deme_size = interface.get_object("change_deme_size")
 		self.deme_select = interface.get_object("deme_select")
+		self.deme_select1 = interface.get_object("deme_select1")
+		self.deme_select2 = interface.get_object("deme_select2")
 		self.error_demesize = interface.get_object("error_demesize")
+		self.error_migration = interface.get_object("error_migration")
 		
+		self.deme_select.set_active(0)
+		self.deme_select1.set_active(0)
+		self.deme_select2.set_active(0)
+		
+		""" Drawing area """
 		self.drawing_area = interface.get_object("drawingarea")
+		self.drawing_area.connect("expose-event", self.expose)
 		
-		self.drawing_area.set_events(gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.POINTER_MOTION_HINT_MASK )
-		self.drawing_area.connect("expose-event", self.drawing_refresh)
-        
+		
+		
+	
 	    
 		
 		interface.connect_signals(self)
@@ -92,20 +101,115 @@ class Interface:
 			
 			self.info.set_text(chaine)
 		
-		
-                                       
-	def drawing_refresh(self,drawing_area,event):
 		""" Drawing refresh """
-		self.gc = self.drawing_area.window.new_gc()
+		self.drawing_refresh()
+	
+
 		
-	 	#couleur = gtk.gdk.color_parse('navajo white')
-		#self.gc.background = gtk.gdk.color_parse()
+	def expose(self, widget, event):
 		
-		self.drawing_area.window.draw_rectangle(self.gc, True , 40, 20, 100, 40)
-		self.drawing_area.window.draw_line(self.gc, 50, 100, 50, 300)
-		self.drawing_area.window.draw_line(self.gc, 100, 100, 100, 300)
-		self.drawing_area.window.draw_line(self.gc, 150, 100, 150, 300)
-		self.drawing_area.window.draw_line(self.gc, 200, 100, 200, 300)
+		cr = self.drawing_area.window.cairo_create()
+		
+		""""white background"""
+		cr.set_source_rgb(1, 1, 1)
+		cr.paint()
+		
+		self.draw_tree(self.nb_demes)
+	
+		
+		
+		
+		
+	def draw_tree_2(self):
+		cr = self.drawing_area.window.cairo_create()
+		
+		cr.set_source_rgb(1, 1, 1)
+		cr.paint()
+		
+		w = self.drawing_area.allocation.width
+		h = self.drawing_area.allocation.height
+		
+		cr.set_line_width(5)
+		cr.set_source_rgb(0.7, 0.2, 0.0)
+		
+		""" branche 1"""
+		cr.translate((w/2)-(w/8), 0) 
+		cr.move_to(0, 0) 
+		cr.line_to(0, (h/2) )
+		cr.move_to(0, (h/2) )
+		cr.curve_to((-w/8)+50, (3*h/4)+50, (-w/8)+50, (3*h/4)+50, -w/4, h)
+		cr.stroke_preserve()
+	
+		""" branche 2"""
+		cr.translate(w/4, 0)
+		cr.move_to(0, 0) 
+		cr.line_to(0, (h/2) )
+		cr.move_to(0, (h/2) )
+		cr.curve_to((-w/8)+50, (3*h/4)+50, (-w/8)+50, (3*h/4)+50, w/4, h)
+		cr.stroke_preserve()
+		
+		""" relier les extremites """
+		cr.move_to(w/4,h)
+		cr.line_to(-w/2,h)
+		cr.move_to(0,0)
+		cr.line_to(-w/4,0)
+		cr.stroke_preserve()
+		
+		
+	
+	def draw_tree(self, param):
+		
+		
+		cr = self.drawing_area.window.cairo_create()
+		
+		
+		cr.set_source_rgb(1, 1, 1)
+		cr.paint()
+		
+		
+		w = self.drawing_area.allocation.width
+		h = self.drawing_area.allocation.height
+		
+		if param > 0:
+			i=0
+			while i < param:
+				cr.save()
+				cr.set_line_width(5)
+				""" choix de la couleur"""
+				
+				if self.demes_list[i].select:
+					cr.set_source_rgb(0.7, 0.2, 0)
+				else:
+					cr.set_source_rgb(0, 0, 0)
+				
+				cr.translate((w*((2*i)+1))/(2*param)-(w/(param*8)), h/10) 
+				cr.move_to(0, 0) 
+				cr.line_to(0, (4*h/5) )
+				cr.line_to(w/(4*param), (4*h/5))
+				
+				"""Texte"""
+				cr.move_to(0,(4*h/5)+(h/20))
+				cr.show_text('id= ') 
+				cr.show_text(str(i+1)) #Text : id of the Deme
+				
+				cr.stroke()
+		
+		
+				cr.translate(w/(4*param), 0)
+				cr.move_to(0, 0) 
+				cr.line_to(-w/(4*param),0)
+				cr.move_to(0, 0) 
+				cr.line_to(0, (4*h/5) )
+				cr.stroke()
+				
+				
+				
+				cr.restore()
+				i+=1
+				
+                                       
+	def drawing_refresh(self):
+		self.draw_tree(self.nb_demes)
 		
 
 	def deme_plus_clicked(self, widget):
@@ -133,6 +237,7 @@ class Interface:
 			
 		else:
 			del self.demes_list[self.nb_demes-1]
+			self.deme_select.remove_text(self.nb_demes)
 			self.pop_size_refresh()
 			self.error_demes.set_text(" ")
 			self.info_refresh()
@@ -158,12 +263,56 @@ class Interface:
 			
 		
 		else:
-			
+			#print str(self.deme_select.get_active_text()-1)
 			self.demes_list[int(self.deme_select.get_active_text())-1].size = entry 
 			self.error_popsize.set_text(" ")
 			self.pop_size_refresh()
 			self.info_refresh()
 		
+	def on_deme_select_changed(self, widget):
+		i=0
+		while i < self.nb_demes:
+			self.demes_list[i].select = False
+			i +=1
+			
+		#print str(self.deme_select.get_active())
+		if self.deme_select.get_active() is not 0:
+			self.demes_list[int(self.deme_select.get_active_text())-1].select = True
+		
+		self.drawing_refresh()
+		
+	def on_deme_select1_changed(self, widget):
+		
+		self.error_migration.set_text(" ")
+		i=0
+		while i < self.nb_demes:
+			self.demes_list[i].select = False
+			i +=1
+		
+		#print str(self.deme_select.get_active())
+		if self.deme_select1.get_active() is not 0:
+			self.demes_list[int(self.deme_select1.get_active_text())-1].select = True
+	
+		if self.deme_select2.get_active() is not 0:
+			self.demes_list[int(self.deme_select2.get_active_text())-1].select = True
+	
+		self.drawing_refresh()
+		
+	def button_migration_clicked(self, widget):
+		try:
+			assert self.deme_select1.get_active() is not 0
+			assert self.deme_select2.get_active() is not 0
+		
+		except AssertionError:
+			self.error_migration.set_text("Not enough deme selected")
+			
+		else:
+			self.error_migration.set_text(" ")
+			
+			if self.deme_select1.get_active() is self.deme_select2.get_active():
+				self.error_migration.set_text("The same deme is selected")
+			else:
+				self.error_migration.set_text(" ")
 
 if __name__ == "__main__":
 	Interface()
