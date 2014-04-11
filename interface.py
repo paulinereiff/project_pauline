@@ -3,7 +3,6 @@ pygtk.require("2.0")
 import gtk
 import deme
 import math
-import cairo
 
 class Interface:
 	def __init__(self):
@@ -11,7 +10,7 @@ class Interface:
 		interface.add_from_file('interface.glade')
 		
 		self.pop_size=0
-		self.nb_migration=0
+		self.nb_demes=0
 		self.demes_list=list()
 		
 		
@@ -33,8 +32,6 @@ class Interface:
 		""" Drawing area """
 		self.drawing_area = interface.get_object("drawingarea")
 		self.drawing_area.connect("expose-event", self.expose)
-		self.drawing_area_migration = interface.get_object("drawingarea_migration")
-		self.drawing_area_migration.connect("expose-event", self.expose2)
 		
 		
 		
@@ -46,7 +43,6 @@ class Interface:
 		
 
 	def on_mainWindow_destroy(self, widget):
-			
 		gtk.main_quit()
 
 	def entry_popsize_activate(self, widget):
@@ -56,7 +52,7 @@ class Interface:
 		
 		try:
 			entry = int(entry)
-			assert entry >= 0 and len(self.demes_list) == 0
+			assert entry >= 0 and self.nb_demes == 0
 
 		except ValueError:
 			self.error_popsize.set_text("Not a number !!!")
@@ -77,13 +73,13 @@ class Interface:
 		""" command line refresh """
 		line = '-ms ' + str(self.pop_size) 
 		
-		if len(self.demes_list) > 0:
+		if self.nb_demes > 0:
 			line += ' -I '
 			
 			for element in self.demes_list:
 				line += str(element.size) + ' '
 			
-			line += str(len(self.demes_list))
+			line += str(self.nb_demes)
 				
 		
 		self.command_line.set_text(line)
@@ -92,12 +88,12 @@ class Interface:
 		chaine = 'Population size is ' + str(self.pop_size)
 		
 		
-		if len(self.demes_list) == 0:
+		if self.nb_demes == 0:
 			chaine +=  ' and there is no deme'
 			self.info.set_text(chaine)
 			
 		else:
-			chaine += ' and there are ' + str(len(self.demes_list)) + ' demes.\n'
+			chaine += ' and there are ' + str(self.nb_demes) + ' demes.\n'
 			i=0
 			for element in self.demes_list:
 				chaine += ' The deme ' + str(i+1) + ' has a size: ' + str(element.size) + '\n'
@@ -105,7 +101,8 @@ class Interface:
 			
 			self.info.set_text(chaine)
 		
-		
+		""" Drawing refresh """
+		self.drawing_refresh()
 	
 
 		
@@ -117,61 +114,52 @@ class Interface:
 		cr.set_source_rgb(1, 1, 1)
 		cr.paint()
 		
-		self.draw_tree()
-		
-	def expose2(self, widget, event):
-		
-		cr = self.drawing_area_migration.window.cairo_create()
-		
-		""""white background"""
-		cr.set_source_rgb(1, 1, 1)
-		cr.paint()
-		
-		
+		self.draw_tree(self.nb_demes)
 	
 		
 		
 		
 		
-	def draw_migration(self):
-		
-		cr = self.drawing_area_migration.window.cairo_create()
+	def draw_tree_2(self):
+		cr = self.drawing_area.window.cairo_create()
 		
 		cr.set_source_rgb(1, 1, 1)
 		cr.paint()
 		
-		w = self.drawing_area_migration.allocation.width
-		h = self.drawing_area_migration.allocation.height
+		w = self.drawing_area.allocation.width
+		h = self.drawing_area.allocation.height
 		
-		cr.set_source_rgb(0, 0, 1)
+		cr.set_line_width(5)
+		cr.set_source_rgb(0.7, 0.2, 0.0)
 		
-		n_arrow=0
+		""" branche 1"""
+		cr.translate((w/2)-(w/8), 0) 
+		cr.move_to(0, 0) 
+		cr.line_to(0, (h/2) )
+		cr.move_to(0, (h/2) )
+		cr.curve_to((-w/8)+50, (3*h/4)+50, (-w/8)+50, (3*h/4)+50, -w/4, h)
+		cr.stroke_preserve()
+	
+		""" branche 2"""
+		cr.translate(w/4, 0)
+		cr.move_to(0, 0) 
+		cr.line_to(0, (h/2) )
+		cr.move_to(0, (h/2) )
+		cr.curve_to((-w/8)+50, (3*h/4)+50, (-w/8)+50, (3*h/4)+50, w/4, h)
+		cr.stroke_preserve()
 		
-		i=0
-		while i < len(self.demes_list):
-			if len(self.demes_list[i].migrate_to) is not 0:
-				
-				j=0
-				
-				while j < len(self.demes_list[i].migrate_to):
-					cr.save()
-					cr.translate(0, (n_arrow+1)*h/(self.nb_migration + 1))
-					cr.move_to((w*((2*i)+1))/(2*len(self.demes_list)), 0)
-					cr.line_to((w*((2*(self.demes_list[i].migrate_to[j]-1))+1))/(2*len(self.demes_list)), 0 )
-					cr.translate((w*((2*(self.demes_list[i].migrate_to[j]-1))+1))/(2*len(self.demes_list)),0)
-					cr.arc(0, 0, h/10, 0, 2*math.pi)
-					cr.stroke()
-					
-					n_arrow +=1
-					j+= 1
-					cr.restore()
+		""" relier les extremites """
+		cr.move_to(w/4,h)
+		cr.line_to(-w/2,h)
+		cr.move_to(0,0)
+		cr.line_to(-w/4,0)
+		cr.stroke_preserve()
 		
-			i += 1	
 		
-			
-	def draw_tree(self):
+	
+	def draw_tree(self, param):
 		
-		param = len(self.demes_list)
+		
 		cr = self.drawing_area.window.cairo_create()
 		
 		
@@ -194,63 +182,65 @@ class Interface:
 				else:
 					cr.set_source_rgb(0, 0, 0)
 				
-				cr.rectangle((w*((2*i)+1))/(2*param)-(w/(param*8)), h/10, w/(param*4), 4*h/5)
-				cr.stroke()
+				cr.translate((w*((2*i)+1))/(2*param)-(w/(param*8)), h/10) 
+				cr.move_to(0, 0) 
+				cr.line_to(0, (4*h/5) )
+				cr.line_to(w/(4*param), (4*h/5))
 				
 				"""Texte"""
-				cr.translate(w*((2*i)+1)/(2*param)-(w/(param*8)), 19*h/20)
-				cr.move_to(0,0)
+				cr.move_to(0,(4*h/5)+(h/20))
 				cr.show_text('id= ') 
 				cr.show_text(str(i+1)) #Text : id of the Deme
+				
+				cr.stroke()
+		
+		
+				cr.translate(w/(4*param), 0)
+				cr.move_to(0, 0) 
+				cr.line_to(-w/(4*param),0)
+				cr.move_to(0, 0) 
+				cr.line_to(0, (4*h/5) )
+				cr.stroke()
+				
+				
 				
 				cr.restore()
 				i+=1
 				
                                        
 	def drawing_refresh(self):
-		self.draw_tree()
-		self.draw_migration()
+		self.draw_tree(self.nb_demes)
 		
 
 	def deme_plus_clicked(self, widget):
 	
-		
-		new_deme = deme.Deme(len(self.demes_list))
+		self.nb_demes += 1
+		new_deme = deme.Deme()
 		self.demes_list.append(new_deme)
-		self.deme_select.append_text(str(len(self.demes_list)))
+		self.deme_select.append_text(str(self.nb_demes))
 		self.error_demes.set_text(" ")
 		self.pop_size_refresh()
 		self.info_refresh()
-		self.drawing_refresh()
+		
 			
 		
 	def deme_minus_clicked(self, widget):
 	
+		self.nb_demes -= 1
 		
 		try :
-			del self.demes_list[len(self.demes_list)-1]
+			assert self.nb_demes >= 0
 			
-		except IndexError:
+		except AssertionError:
 			self.error_demes.set_text("Negative number !!")
+			self.nb_demes += 1
 			
 		else:
-			self.deme_select.remove_text(len(self.demes_list))
+			del self.demes_list[self.nb_demes-1]
+			self.deme_select.remove_text(self.nb_demes)
 			self.pop_size_refresh()
 			self.error_demes.set_text(" ")
-			
-			i=0	
-			while i < len(self.demes_list):
-				j=0
-				while j < len(self.demes_list[i].migrate_to):
-					if self.demes_list[i].migrate_to[j] >= len(self.demes_list):
-						self.demes_list[i].migrate_to.remove(self.demes_list[i].migrate_to[j])	
-					j+=1
-				i+=1
-				
 			self.info_refresh()
-			self.drawing_refresh()
-		
-
 	
 	def pop_size_refresh(self):
 		self.pop_size = 0 
@@ -273,7 +263,7 @@ class Interface:
 			
 		
 		else:
-			
+			#print str(self.deme_select.get_active_text()-1)
 			self.demes_list[int(self.deme_select.get_active_text())-1].size = entry 
 			self.error_popsize.set_text(" ")
 			self.pop_size_refresh()
@@ -281,11 +271,11 @@ class Interface:
 		
 	def on_deme_select_changed(self, widget):
 		i=0
-		while i < len(self.demes_list):
+		while i < self.nb_demes:
 			self.demes_list[i].select = False
 			i +=1
 			
-	
+		#print str(self.deme_select.get_active())
 		if self.deme_select.get_active() is not 0:
 			self.demes_list[int(self.deme_select.get_active_text())-1].select = True
 		
@@ -295,11 +285,11 @@ class Interface:
 		
 		self.error_migration.set_text(" ")
 		i=0
-		while i < len(self.demes_list):
+		while i < self.nb_demes:
 			self.demes_list[i].select = False
 			i +=1
 		
-
+		#print str(self.deme_select.get_active())
 		if self.deme_select1.get_active() is not 0:
 			self.demes_list[int(self.deme_select1.get_active_text())-1].select = True
 	
@@ -319,26 +309,10 @@ class Interface:
 		else:
 			self.error_migration.set_text(" ")
 			
-			i=0
-			try:
-			
-				while i < len(self.demes_list[int(self.deme_select1.get_active())-1].migrate_to):	
-					assert self.demes_list[int(self.deme_select1.get_active())-1].migrate_to[i] is not self.deme_select2.get_active()	 
-					i += 1
-					
-			except AssertionError:
-				self.error_migration.set_text("This migration already exists")
-			
+			if self.deme_select1.get_active() is self.deme_select2.get_active():
+				self.error_migration.set_text("The same deme is selected")
 			else:
-			
-				if self.deme_select1.get_active() is self.deme_select2.get_active():
-					self.error_migration.set_text("The same deme is selected")
-				
-				else:
-					self.error_migration.set_text(" ")
-					self.demes_list[int(self.deme_select1.get_active())-1].migrate_to.append(self.deme_select2.get_active())
-					self.nb_migration += 1
-					self.draw_migration()
+				self.error_migration.set_text(" ")
 
 if __name__ == "__main__":
 	Interface()
