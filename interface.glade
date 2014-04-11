@@ -185,23 +185,13 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkDrawingArea" id="drawingarea_migration">
+                          <object class="GtkDrawingArea" id="drawingarea">
                             <property name="width_request">400</property>
-                            <property name="height_request">100</property>
+                            <property name="height_request">500</property>
                             <property name="visible">True</property>
                           </object>
                           <packing>
                             <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkDrawingArea" id="drawingarea">
-                            <property name="width_request">400</property>
-                            <property name="height_request">450</property>
-                            <property name="visible">True</property>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
@@ -403,8 +393,7 @@
                         <child>
                           <object class="GtkLabel" id="migration">
                             <property name="visible">True</property>
-                            <property name="yalign">0.41999998688697815</property>
-                            <property name="label" translatable="yes">&lt;span size="x-large"&gt;Migration (in blue)&lt;/span&gt;</property>
+                            <property name="label" translatable="yes">&lt;span size="x-large"&gt;Migration&lt;/span&gt;</property>
                             <property name="use_markup">True</property>
                           </object>
                           <packing>
