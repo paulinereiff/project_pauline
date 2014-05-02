@@ -7,4 +7,6 @@ class Deme:
 		self.id = id
 		self.size = size
 		self.select = False
-		self.migrate_to=list()
+		self.migrate_to = list()
+		self.join_to = list()
+		self.is_joined_by = list()

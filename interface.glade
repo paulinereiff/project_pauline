@@ -3,7 +3,7 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="fenetre principale">
-    <property name="width_request">800</property>
+    <property name="width_request">1200</property>
     <property name="height_request">800</property>
     <property name="visible">True</property>
     <property name="title" translatable="yes">Mon super programme</property>
@@ -169,30 +169,10 @@
                         <property name="visible">True</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkLabel" id="info">
-                            <property name="width_request">400</property>
-                            <property name="height_request">200</property>
-                            <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="yalign">0</property>
-                            <property name="xpad">20</property>
-                            <property name="ypad">20</property>
-                            <property name="wrap">True</property>
-                            <property name="max_width_chars">50</property>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
+                          <placeholder/>
                         </child>
                         <child>
-                          <object class="GtkDrawingArea" id="drawingarea_migration">
-                            <property name="width_request">400</property>
-                            <property name="height_request">100</property>
-                            <property name="visible">True</property>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
+                          <placeholder/>
                         </child>
                         <child>
                           <object class="GtkDrawingArea" id="drawingarea">
@@ -212,6 +192,22 @@
                   </object>
                   <packing>
                     <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="info">
+                    <property name="width_request">400</property>
+                    <property name="height_request">200</property>
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="xpad">20</property>
+                    <property name="ypad">20</property>
+                    <property name="wrap">True</property>
+                    <property name="max_width_chars">50</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
@@ -438,10 +434,10 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="deme_select1">
+                                  <object class="GtkComboBox" id="deme_select_migration1">
                                     <property name="visible">True</property>
                                     <property name="model">liststore1</property>
-                                    <signal name="changed" handler="on_deme_select1_changed"/>
+                                    <signal name="changed" handler="on_deme_select_migration_changed"/>
                                     <child>
                                       <object class="GtkCellRendererText" id="cellrenderertext2"/>
                                       <attributes>
@@ -493,10 +489,10 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="deme_select2">
+                                  <object class="GtkComboBox" id="deme_select_migration2">
                                     <property name="visible">True</property>
                                     <property name="model">liststore1</property>
-                                    <signal name="changed" handler="on_deme_select1_changed"/>
+                                    <signal name="changed" handler="on_deme_select_migration_changed"/>
                                     <child>
                                       <object class="GtkCellRendererText" id="cellrenderertext3"/>
                                       <attributes>
@@ -538,6 +534,18 @@
                             <property name="position">4</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkButton" id="button_delete_migrations">
+                            <property name="label" translatable="yes">Delete all migrations</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="button_delete_migrations_clicked"/>
+                          </object>
+                          <packing>
+                            <property name="position">5</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="position">2</property>
@@ -548,13 +556,132 @@
                         <property name="visible">True</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkLabel" id="label4">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;span size="x-large"&gt;Join&lt;/span&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkHBox" id="hbox5">
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkVBox" id="vbox10">
+                                <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel" id="label5">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">Deme 1</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="deme_select_join1">
+                                    <property name="visible">True</property>
+                                    <property name="model">liststore1</property>
+                                    <signal name="changed" handler="on_deme_select_join_changed"/>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                                      <attributes>
+                                        <attribute name="text">0</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkVBox" id="vbox11">
+                                <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <object class="GtkArrow" id="arrow2">
+                                    <property name="visible">True</property>
+                                    <property name="shadow_type">etched-in</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkVBox" id="vbox12">
+                                <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel" id="label6">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">Deme 2</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="deme_select_join2">
+                                    <property name="visible">True</property>
+                                    <property name="model">liststore1</property>
+                                    <signal name="changed" handler="on_deme_select_join_changed"/>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                                      <attributes>
+                                        <attribute name="text">0</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkButton" id="button_join">
+                            <property name="label" translatable="yes">Ok</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image_position">bottom</property>
+                            <signal name="clicked" handler="button_join_clicked"/>
+                          </object>
+                          <packing>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="error_join">
+                            <property name="visible">True</property>
+                          </object>
+                          <packing>
+                            <property name="position">3</property>
+                          </packing>
                         </child>
                       </object>
                       <packing>
@@ -563,7 +690,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
