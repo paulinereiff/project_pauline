@@ -2,6 +2,7 @@ import pygtk
 pygtk.require("2.0")
 import gtk
 import deme
+import migration
 import math
 import cairo
 
@@ -11,9 +12,10 @@ class Interface:
 		interface.add_from_file('interface.glade')
 		
 		self.pop_size=0
-		self.nb_migration=0
+		self.migration_list=list()
 		self.nb_join=0
 		self.demes_list=list()
+		self.deme_select_list=list()
 		
 		
 		self.error_popsize = interface.get_object("error_popsize")
@@ -21,24 +23,32 @@ class Interface:
 		self.error_demes = interface.get_object("error_demes")
 		self.command_line = interface.get_object("command_line")
 		self.change_deme_size = interface.get_object("change_deme_size")
-		self.deme_select = interface.get_object("deme_select")
-		self.deme_select_migration1 = interface.get_object("deme_select_migration1")
-		self.deme_select_migration2 = interface.get_object("deme_select_migration2")
+		
 		self.error_demesize = interface.get_object("error_demesize")
 		self.error_migration = interface.get_object("error_migration")
 		self.error_join = interface.get_object("error_join")
-		self.deme_select_join1 = interface.get_object("deme_select_join1")
-		self.deme_select_join2 = interface.get_object("deme_select_join2")
+		self.error_amount = interface.get_object("error_amount")
 		
-		self.deme_select.set_active(0)
-		self.deme_select_migration1.set_active(0)
-		self.deme_select_migration2.set_active(0)
-		self.deme_select_join1.set_active(0)
-		self.deme_select_join2.set_active(0)
+		self.entry_amount = interface.get_object("entry_amount")
+		
+		
+		self.select_selectable = interface.get_object("select_selectable")
+		self.info_select = interface.get_object("info_select")
+		self.label_deme = interface.get_object("label_deme")
+		self.label_deme1 = interface.get_object("label_deme1")
+		self.label_deme2 = interface.get_object("label_deme2")
+
+		
+		self.select_selectable.set_active(0)
 		
 		""" Drawing area """
 		self.drawing_area = interface.get_object("drawingarea")
 		self.drawing_area.connect("expose-event", self.expose)
+		
+		self.drawing_area.connect("button_press_event", self.button_press_event)
+		self.drawing_area.add_events(gtk.gdk.BUTTON_PRESS_MASK)
+		
+	
 		
 		
 		
@@ -75,7 +85,9 @@ class Interface:
 			self.pop_size = entry
 			self.error_popsize.set_text(" ")
 			self.info_refresh()
-			
+	
+	
+
 	def info_refresh(self):
 		
 		""" command line refresh """
@@ -88,6 +100,14 @@ class Interface:
 				line += str(element.size) + ' '
 			
 			line += str(len(self.demes_list))
+			
+		if len(self.migration_list) > 0:
+			line += ' -m '
+			
+			for i in range(0, len(self.migration_list)):
+				line += str(self.migration_list[i].fro.id) + ' ' + str(self.migration_list[i].to.id)
+			
+			
 				
 		
 		self.command_line.set_text(line)
@@ -97,20 +117,57 @@ class Interface:
 		
 		
 		if len(self.demes_list) == 0:
-			chaine +=  ' and there is no deme'
-			self.info.set_text(chaine)
+			chaine +=  ' and there is no deme \n \n'
+			
 			
 		else:
-			chaine += ' and there are ' + str(len(self.demes_list)) + ' demes.\n'
+			chaine += ' and there are ' + str(len(self.demes_list)) + ' demes.\n \n'
 			i=0
 			for element in self.demes_list:
-				chaine += ' The deme ' + str(self.demes_list[i].id) + ' has a size: ' + str(element.size) + '\n'
+				chaine += ' The deme ' + str(self.demes_list[i].id) + ' has a size: ' + str(element.size) + '\n \n'
 				i += 1
 			
-			self.info.set_text(chaine)
+		if len(self.migration_list) == 0:
+			chaine += 'There is no migration.'
+			
+		else:
+			chaine += 'There are ' + str(len(self.migration_list)) + ' migrations.\n \n'
+			for i in range(0, len(self.migration_list)):
+ 				chaine += 'There is a migration from the deme '+ str(self.migration_list[i].fro.id) + ' to the deme '+ str(self.migration_list[i].to.id) + ' \n with an amount of '+str(self.migration_list[i].amount) + '. \n\n'
+				
+		self.info.set_text(chaine)
+		
+		""" Selection refresh """
+		chaine2=''
 		
 		
-	
+		
+			
+		for i in range(0, len(self.demes_list)):
+			if self.demes_list[i].select:
+				chaine2 += 'You have selected the Deme '
+				chaine2 += str(self.demes_list[i].id) + '\n'
+				
+		for i in range(0, len(self.migration_list)):
+			if self.migration_list[i].select:
+				chaine2 += 'You have selected the Migration from '
+				chaine2 += str(self.migration_list[i].fro.id) + ' to ' + str(self.migration_list[i].to.id) + '. \n'
+					
+
+		
+		self.info_select.set_text(chaine2)
+		
+		if len(self.deme_select_list)>=2:
+			self.label_deme1.set_text('Deme ' + str(self.deme_select_list[0].id))
+			self.label_deme2.set_text('Deme ' + str(self.deme_select_list[1].id))
+
+		if len(self.deme_select_list)>=1:
+			self.label_deme.set_text('Deme ' + str(self.deme_select_list[0].id))
+		else:
+			self.label_deme1.set_text('')
+			self.label_deme2.set_text('')
+
+		
 
 		
 	def expose(self, widget, event):
@@ -121,9 +178,6 @@ class Interface:
 		cr.set_source_rgb(1, 1, 1)
 		cr.paint()
 		
-		self.draw_tree()
-		
-
 		
 		
 		
@@ -142,32 +196,36 @@ class Interface:
 		
 		n_arrow=0
 		
-		i=0
-		while i < len(self.demes_list):
-			if len(self.demes_list[i].migrate_to) is not 0:
-				
-				j=0
-				
-				while j < len(self.demes_list[i].migrate_to):
-					cr.save()
-					cr.translate(0, (n_arrow+1)*h/(self.nb_migration + 1))
-					cr.move_to((w*((2*i)+1))/(2*len(self.demes_list)), 0)
-					cr.line_to((w*((2*(self.demes_list[i].migrate_to[j]-1))+1))/(2*len(self.demes_list)), 0 )
-					cr.translate((w*((2*(self.demes_list[i].migrate_to[j]-1))+1))/(2*len(self.demes_list)),0)
-					cr.arc(0, 0, h/50, 0, 2*math.pi)
-					cr.stroke()
-					
-					n_arrow +=1
-					j+= 1
-					cr.restore()
 		
-			i += 1	
+		for i in range(0, len(self.migration_list)):
+			self.select_color_migration(cr, i)
+			start=self.demes_list.index(self.deme_of_id(self.migration_list[i].fro.id))
+			end=self.migration_list[i].to.id
+			cr.save()
+			cr.translate(0, (n_arrow+1)*h/(len(self.migration_list) + 1))
+			cr.move_to((w*((2*start)+1))/(2*len(self.demes_list)), 0)
+			cr.line_to((w*((2*(end-1))+1))/(2*len(self.demes_list)), 0 )
+			cr.translate((w*((2*(end-1))+1))/(2*len(self.demes_list)),0)
+			cr.arc(0, 0, h/50, 0, 2*math.pi)
+			cr.stroke()
+					
+			n_arrow +=1
+					
+			cr.restore()
+		
+				
 		
 	def select_color(self, cr, index_deme):
 		if self.demes_list[index_deme].select:
 			cr.set_source_rgb(0.7, 0.2, 0)
 		else:
 			cr.set_source_rgb(0, 0, 0)
+			
+	def select_color_migration(self, cr, index_mig):
+		if self.migration_list[index_mig].select:
+			cr.set_source_rgb(1, 0, 1)
+		else:
+			cr.set_source_rgb(0, 0, 1)
 				
 	def draw_tree(self):
 		
@@ -227,7 +285,7 @@ class Interface:
 		w = self.drawing_area.allocation.width
 		h = self.drawing_area.allocation.height
 		
-		cr.set_source_rgb(0, 0, 1)
+		cr.set_source_rgb(0, 0, 0)
 		
 		for i in range(0, len(self.demes_list)):
 			cr.save()
@@ -257,6 +315,7 @@ class Interface:
                                        
 	def drawing_refresh(self):
 		self.order_demes_list()
+		self.info_refresh()
 		self.draw_tree()
 		self.draw_migration()
 		self.draw_text()
@@ -268,10 +327,8 @@ class Interface:
 		
 		new_deme = deme.Deme(len(self.demes_list)+1)
 		self.demes_list.append(new_deme)
-		self.deme_select.append_text(str(len(self.demes_list)))
 		self.error_demes.set_text(" ")
 		self.pop_size_refresh()
-		self.info_refresh()
 		self.drawing_refresh()
 			
 		
@@ -285,7 +342,6 @@ class Interface:
 			self.error_demes.set_text("Negative number !!")
 			
 		else:
-			self.deme_select.remove_text(len(self.demes_list)+1)
 			self.pop_size_refresh()
 			self.error_demes.set_text(" ")
 			
@@ -297,8 +353,8 @@ class Interface:
 						self.demes_list[i].migrate_to.remove(self.demes_list[i].migrate_to[j])	
 					j+=1
 				i+=1
-				
-			self.info_refresh()
+			
+			self.pop_size_refresh()	
 			self.drawing_refresh()
 		
 	def button_delete_migrations_clicked(self, widget):
@@ -311,9 +367,10 @@ class Interface:
 				self.demes_list[i].migrate_to.remove(self.demes_list[i].migrate_to[j-1])	
 				j+=1
 			i+=1
-		self.info_refresh()
+		
+		self.migration_list=[]
 		self.drawing_refresh()
-		self.nb_migration=0
+		
 		
 	
 	def pop_size_refresh(self):
@@ -324,67 +381,42 @@ class Interface:
 	
 	def entry_deme_size_activate(self, widget):
 		entry=widget.get_text()
-		
+		self.error_demesize.set_text(" ")
 		try:
-			entry = int(entry)
-			assert entry >= 0 
-
-		except ValueError:
-			self.error_demesize.set_text("Not a number !!!")
-			
+		
+			assert len(self.deme_select_list) >= 1
+		
 		except AssertionError:
-				self.error_demesize.set_text("Negative number !!")
-			
-		
-		else:
-			
-			self.demes_list[int(self.deme_select.get_active_text())-1].size = entry 
-			self.error_popsize.set_text(" ")
-			self.pop_size_refresh()
-			self.info_refresh()
-		
-	def on_deme_select_changed(self, widget):
-		i=0
-		while i < len(self.demes_list):
-			self.demes_list[i].select = False
-			i +=1
-			
-	
-		if self.deme_select.get_active() is not 0:
-				for i in range(0, len(self.demes_list)):
-					if self.demes_list[i].id == self.deme_select.get_active():
-						self.demes_list[i].select = True 
-			
-			
-		
-		
-		self.drawing_refresh()
-		
-	def on_deme_select_migration_changed(self, widget):
-		
-		self.error_migration.set_text(" ")
-		i=0
-		while i < len(self.demes_list):
-			self.demes_list[i].select = False
-			i +=1
-		
+				self.error_demesize.set_text("You must select a Deme !")
+				
+		else:		
+					
+			try:
+				entry = int(entry)
+				assert entry >= 0 
 
-		if self.deme_select_migration1.get_active() is not 0:
-			for i in range(0, len(self.demes_list)):
-					if self.demes_list[i].id == self.deme_select_migration1.get_active():
-						self.demes_list[i].select = True 
+			except ValueError:
+				self.error_demesize.set_text("Not a number !!!")
+			
+			except AssertionError:
+					self.error_demesize.set_text("Negative number !!")
+			
+		
+			else:
+		
+				self.deme_of_id(self.deme_select_list[0].id).size = entry
+				self.error_popsize.set_text(" ")
+				self.pop_size_refresh()
+				self.info_refresh()
+		
 	
-		if self.deme_select_migration2.get_active() is not 0:
-			for i in range(0, len(self.demes_list)):
-					if self.demes_list[i].id == self.deme_select_migration2.get_active():
-						self.demes_list[i].select = True 
+		
 	
-		self.drawing_refresh()
 		
 	def button_migration_clicked(self, widget):
 		try:
-			assert self.deme_select_migration1.get_active() is not 0
-			assert self.deme_select_migration2.get_active() is not 0
+			assert len(self.deme_select_list) >= 2
+			
 		
 		except AssertionError:
 			self.error_migration.set_text("Not enough deme selected")
@@ -395,52 +427,44 @@ class Interface:
 			i=0
 			try:
 				for j in range(0, len(self.demes_list)):
-					if self.demes_list[j].id == int(self.deme_select_migration1.get_active()):
+					if self.demes_list[j].id == int(self.deme_select_list[0].id):
 						for i in range(0, len(self.demes_list[j].migrate_to)):	
-							assert self.demes_list[j].migrate_to[i] is not self.deme_select_migration2.get_active()	 
+							assert self.demes_list[j].migrate_to[i] is not self.deme_select_list[1].id	 
 					
 			except AssertionError:
 				self.error_migration.set_text("This migration already exists")
 			
 			else:
+				entry = self.entry_amount.get_text()
+				try:
+					entry = int(entry)
+					assert self.entry_amount.get_text() >= 0
+
+				except ValueError:
+					self.error_migration.set_text("You must entry an amount !!!")
 			
-				if self.deme_select_migration1.get_active() is self.deme_select_migration2.get_active():
-					self.error_migration.set_text("The same deme is selected")
-				
+				except AssertionError:
+					self.error_migration.set_text("Negative number !!")
+			
 				else:
+				
 					self.error_migration.set_text(" ")
 					for j in range(0, len(self.demes_list)):
-						if self.demes_list[j].id == int(self.deme_select_migration1.get_active()):
-							self.demes_list[j].migrate_to.append(self.deme_select_migration2.get_active())
-					self.nb_migration += 1
+						if self.demes_list[j].id == int(self.deme_select_list[0].id):
+							fro = self.demes_list[j]
+							self.demes_list[j].migrate_to.append(self.deme_select_list[1].id)
+						if self.demes_list[j].id == int(self.deme_select_list[1].id):
+							to = self.demes_list[j]
+					
+			
+					new_migration = migration.Migration(fro, to, self.entry_amount.get_text() )
+					self.migration_list.append(new_migration)
 					self.drawing_refresh()
 		
-	def on_deme_select_join_changed(self, widget):
-	
-		self.error_join.set_text(" ")
-		i=0
-		while i < len(self.demes_list):
-			self.demes_list[i].select = False
-			i +=1
-	
 
-		if self.deme_select_join1.get_active() is not 0:
-			for i in range(0, len(self.demes_list)):
-					if self.demes_list[i].id == self.deme_select_join1.get_active():
-						self.demes_list[i].select = True 
-			
-
-		if self.deme_select_join2.get_active() is not 0:
-			for i in range(0, len(self.demes_list)):
-					if self.demes_list[i].id == self.deme_select_join2.get_active():
-						self.demes_list[i].select = True 
-
-		self.drawing_refresh()
-		
 	def button_join_clicked(self, widget):
 		try:
-			assert self.deme_select_join1.get_active() is not 0
-			assert self.deme_select_join2.get_active() is not 0
+			assert len(self.deme_select_list) >= 2
 		
 		except AssertionError:
 			self.error_join.set_text("Not enough deme selected")
@@ -451,31 +475,84 @@ class Interface:
 			
 			try:
 				for j in range(0, len(self.demes_list)):
-					if self.demes_list[j].id == int(self.deme_select_join1.get_active()):
+					if self.demes_list[j].id == int(self.deme_select_list[0].id):
 						for i in range(0, len(self.demes_list[j].join_to)):	
-							assert self.demes_list[j].join_to[i] is not self.deme_select_join2.get_active()	 
+							assert self.demes_list[j].join_to[i] is not self.deme_select_list[1].id	
 							
 					
 			except AssertionError:
 				self.error_join.set_text("This demes are already joined")
 				
+		
+			
 			else:
-			
-				if self.deme_select_join1.get_active() is self.deme_select_join2.get_active():
-					self.error_join.set_text("The same deme is selected")
+				self.error_join.set_text(" ")
+				for j in range(0, len(self.demes_list)):
+					if self.demes_list[j].id ==self.deme_select_list[0].id	:
+						self.demes_list[j].join_to.append(self.deme_select_list[1].id	)
+					if self.demes_list[j].id == int(self.deme_select_list[1].id	):
+						self.demes_list[j].is_joined_by.append(self.deme_select_list[0].id	)
 				
-				else:
-					self.error_join.set_text(" ")
-					for j in range(0, len(self.demes_list)):
-						if self.demes_list[j].id == int(self.deme_select_join1.get_active()):
-							self.demes_list[j].join_to.append(self.deme_select_join2.get_active())
-						if self.demes_list[j].id == int(self.deme_select_join2.get_active()):
-							self.demes_list[j].is_joined_by.append(self.deme_select_join1.get_active())
+				self.nb_join += 1
+				self.drawing_refresh()
+				
+	def button_invert_clicked(self, widget):
+		a=self.deme_select_list[0]
+		b=self.deme_select_list[1]
+		self.deme_select_list[0]=b
+		self.deme_select_list[1]=a
+		
+		self.drawing_refresh()
+		
+	def button_delete_one_migration_clicked(self, widget):
+		
+		print str(len(self.migration_list))			
+		#for i in range(0, len(self.migration_list)):
+		i=0
+		while i <  len(self.migration_list):
+			if self.migration_list[i].select:
+				index_start = self.demes_list.index(self.deme_of_id(self.migration_list[i].fro.id))
+				self.demes_list[index_start].migrate_to.remove(self.migration_list[i].to.id)
+				self.migration_list.remove(self.migration_list[i])
+			i+=1	
+		
+		self.drawing_refresh()
+			
+	def button_press_event(self, widget, event):
+		w = self.drawing_area.allocation.width
+		h = self.drawing_area.allocation.height
+		
+		
+		
+		if self.select_selectable.get_active() is 0:
+		
+			for i in range(0, len(self.demes_list)):
+				if event.x < (i+1)*w/len(self.demes_list) and event.x > i*w/len(self.demes_list) :
+					self.demes_list[i].select = not self.demes_list[i].select
 					
-					self.nb_join += 1
-					self.drawing_refresh()
 			
+					
 			
+		elif self.select_selectable.get_active() is 1:
+			for i in range(0, len(self.migration_list)):
+				if event.y < (i+1)*h/len(self.migration_list) and event.y > i*h/len(self.migration_list):
+					self.migration_list[i].select = not self.migration_list[i].select
+					print str(event.y)
+			
+		elif self.select_selectable.get_active() is 2:
+			print 'i will select a Join'
+		
+		
+		""" Refresh deme_select_list """
+		self.deme_select_list = []
+		
+		for i in range(0, len(self.demes_list)):
+			if self.demes_list[i].select:
+				self.deme_select_list.append(self.demes_list[i])
+		
+		
+		self.drawing_refresh()
+	
 
 if __name__ == "__main__":
 	Interface()
