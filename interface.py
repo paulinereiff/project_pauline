@@ -3,6 +3,7 @@ pygtk.require("2.0")
 import gtk
 import deme
 import migration
+import junction
 import math
 import cairo
 
@@ -13,6 +14,7 @@ class Interface:
 		
 		self.pop_size=0
 		self.migration_list=list()
+		self.junction_list = list()
 		self.nb_join=0
 		self.demes_list=list()
 		self.deme_select_list=list()
@@ -27,9 +29,10 @@ class Interface:
 		self.error_demesize = interface.get_object("error_demesize")
 		self.error_migration = interface.get_object("error_migration")
 		self.error_join = interface.get_object("error_join")
-		self.error_amount = interface.get_object("error_amount")
+		
 		
 		self.entry_amount = interface.get_object("entry_amount")
+		self.entry_amount2 = interface.get_object("entry_amount2")
 		
 		
 		self.select_selectable = interface.get_object("select_selectable")
@@ -102,12 +105,21 @@ class Interface:
 			line += str(len(self.demes_list))
 			
 		if len(self.migration_list) > 0:
-			line += ' -m '
+			
 			
 			for i in range(0, len(self.migration_list)):
+				line += ' -m '
 				line += str(self.migration_list[i].fro.id) + ' ' + str(self.migration_list[i].to.id)
+				line += ' 1 '
+		
+		if len(self.junction_list) > 0:
 			
 			
+			for i in range(0, len(self.junction_list)):
+				line += ' -ej '
+				line += ' t '
+				line += str(self.junction_list[i].fro.id) + ' ' + str(self.junction_list[i].to.id)
+				
 				
 		
 		self.command_line.set_text(line)
@@ -128,12 +140,20 @@ class Interface:
 				i += 1
 			
 		if len(self.migration_list) == 0:
-			chaine += 'There is no migration.'
+			chaine += 'There is no migration. \n'
 			
 		else:
 			chaine += 'There are ' + str(len(self.migration_list)) + ' migrations.\n \n'
 			for i in range(0, len(self.migration_list)):
  				chaine += 'There is a migration from the deme '+ str(self.migration_list[i].fro.id) + ' to the deme '+ str(self.migration_list[i].to.id) + ' \n with an amount of '+str(self.migration_list[i].amount) + '. \n\n'
+		
+		if len(self.junction_list) == 0:
+			chaine += 'There is no junctions. \n'
+			
+		else:
+			chaine += 'There are ' + str(len(self.junction_list)) + ' junctions.\n \n'
+			for i in range(0, len(self.junction_list)):
+ 				chaine += 'The deme '+ str(self.junction_list[i].fro.id) + ' is joined to the deme '+ str(self.junction_list[i].to.id) + ' \n with an amount of '+str(self.junction_list[i].amount) + '. \n\n'
 				
 		self.info.set_text(chaine)
 		
@@ -180,37 +200,60 @@ class Interface:
 		
 		
 		
+	def draw_triangle(self,cr,right):
 		
 		
+		
+		if right:
+			cr.move_to(0,0)
+			cr.line_to(-20, -15)
+			cr.line_to(-20, 15)
+			cr.line_to(0,0)
+			cr.stroke()
+		
+		else:
+			cr.move_to(0,0)
+			cr.line_to(20, -15)
+			cr.line_to(20, 15)
+			cr.line_to(0,0)
+			cr.stroke()
 		
 		
 	def draw_migration(self):
 		
 		cr = self.drawing_area.window.cairo_create()
 
-		
+	
 		w = self.drawing_area.allocation.width
 		h = self.drawing_area.allocation.height
-		
+	
 		cr.set_source_rgb(0, 0, 1)
-		
+	
 		n_arrow=0
-		
-		
+	
+	
 		for i in range(0, len(self.migration_list)):
 			self.select_color_migration(cr, i)
 			start=self.demes_list.index(self.deme_of_id(self.migration_list[i].fro.id))
-			end=self.migration_list[i].to.id
+			#end=self.migration_list[i].to.id
+			end=self.demes_list.index(self.deme_of_id(self.migration_list[i].to.id))
 			cr.save()
 			cr.translate(0, (n_arrow+1)*h/(len(self.migration_list) + 1))
 			cr.move_to((w*((2*start)+1))/(2*len(self.demes_list)), 0)
-			cr.line_to((w*((2*(end-1))+1))/(2*len(self.demes_list)), 0 )
-			cr.translate((w*((2*(end-1))+1))/(2*len(self.demes_list)),0)
-			cr.arc(0, 0, h/50, 0, 2*math.pi)
+			cr.line_to((w*((2*(end))+1))/(2*len(self.demes_list)), 0 )
+			cr.translate((w*((2*(end))+1))/(2*len(self.demes_list)), 0)
+			
+			if (w*((2*start)+1))/(2*len(self.demes_list)) < (w*((2*(end))+1))/(2*len(self.demes_list)):
+				right = True
+			else:
+				right = False
+		
+			self.draw_triangle(cr, right)
+
 			cr.stroke()
-					
+				
 			n_arrow +=1
-					
+				
 			cr.restore()
 		
 				
@@ -226,6 +269,13 @@ class Interface:
 			cr.set_source_rgb(1, 0, 1)
 		else:
 			cr.set_source_rgb(0, 0, 1)
+			
+	def select_color_junction(self, cr, index):
+		if self.junction_list[index].select:
+			cr.set_source_rgb(0.8, 0.5, 0)
+		
+		else:
+			cr.set_source_rgb(0, 0, 0)
 				
 	def draw_tree(self):
 		
@@ -259,21 +309,39 @@ class Interface:
 					cr.rectangle((w*((2*i)+1))/(2*param)-(w/(param*8)), h*(nb_arrow+1)/(self.nb_join+1), w/(param*4), (9*h/10)-(h*(nb_arrow+1)/(self.nb_join+1)))
 					cr.stroke()
 					cr.move_to((w*((2*i)+1))/(2*param)-(w/(param*8)),h*(nb_arrow+1)/(self.nb_join+1))
-					cr.set_source_rgb(0, 0, 0)
-					""" dessin join """
-					for k in range(0, len(self.demes_list[i].join_to)):
-						cr.save()
-						cr.move_to((w*((2*i)+1))/(2*param)-(w/(param*8)),h*(nb_arrow+1)/(self.nb_join+1) + 0.01*h*k)
-						for j in range(0, len(self.demes_list)):
-							if self.demes_list[j].id == self.demes_list[i].join_to[k]:
-								cr.line_to((w*((2*j)+1))/(2*param)-(w/(param*8)),h*(nb_arrow+1)/(self.nb_join+1) + 0.01*h*k)
-								cr.arc((w*((2*j)+1))/(2*param)-(w/(param*8)), h*(nb_arrow+1)/(self.nb_join+1) + 0.01*h*k, h/50, 0, 2*math.pi)
-								cr.stroke()
-						cr.restore()
 				
+				
+			""" dessin join """
 					
 					
-					nb_arrow += 1
+			
+					
+			for i in range(0, len(self.junction_list)):
+				self.select_color_junction(cr, i)
+				start=self.demes_list.index(self.deme_of_id(self.junction_list[i].fro.id)) #index dans la deme_list du deme de depart	
+				end=self.demes_list.index(self.deme_of_id(self.junction_list[i].to.id))
+				cr.save()
+				cr.translate(0, (nb_arrow+1)*h/(len(self.junction_list) + 1))
+				cr.move_to((w*((2*start)+1))/(2*len(self.demes_list)), 0)
+				cr.line_to((w*((2*(end))+1))/(2*len(self.demes_list)), 0 )
+				cr.translate((w*((2*(end))+1))/(2*len(self.demes_list)), 0)
+	
+				if (w*((2*start)+1))/(2*len(self.demes_list)) < (w*((2*(end))+1))/(2*len(self.demes_list)):
+					right = True
+				else:
+					right = False
+		
+
+				self.draw_triangle(cr, right)
+
+				cr.stroke()
+			
+				
+			
+				cr.restore()
+			
+			
+				nb_arrow += 1
 					
 				
 				cr.restore()
@@ -357,20 +425,29 @@ class Interface:
 			self.pop_size_refresh()	
 			self.drawing_refresh()
 		
+	def button_delete_junctions_clicked(self, widget):
+		
+		i=0	
+		while i < len(self.demes_list):
+			self.demes_list[i].join_to = []
+			self.demes_list[i].is_joined_by = []
+			i+=1
+		
+		self.nb_join=0
+		self.junction_list = []
+		self.drawing_refresh()
+		
+	
 	def button_delete_migrations_clicked(self, widget):
 		
 		i=0	
 		while i < len(self.demes_list):
-			j=0
-			len_migrate_to = len(self.demes_list[i].migrate_to)
-			while j < len_migrate_to:
-				self.demes_list[i].migrate_to.remove(self.demes_list[i].migrate_to[j-1])	
-				j+=1
+			self.demes_list[i].migrato_to = []
 			i+=1
 		
 		self.migration_list=[]
 		self.drawing_refresh()
-		
+			
 		
 	
 	def pop_size_refresh(self):
@@ -399,7 +476,7 @@ class Interface:
 				self.error_demesize.set_text("Not a number !!!")
 			
 			except AssertionError:
-					self.error_demesize.set_text("Negative number !!")
+				self.error_demesize.set_text("Negative number !!")
 			
 		
 			else:
@@ -438,7 +515,7 @@ class Interface:
 				entry = self.entry_amount.get_text()
 				try:
 					entry = int(entry)
-					assert self.entry_amount.get_text() >= 0
+					assert entry >= 0
 
 				except ValueError:
 					self.error_migration.set_text("You must entry an amount !!!")
@@ -447,19 +524,26 @@ class Interface:
 					self.error_migration.set_text("Negative number !!")
 			
 				else:
-				
-					self.error_migration.set_text(" ")
-					for j in range(0, len(self.demes_list)):
-						if self.demes_list[j].id == int(self.deme_select_list[0].id):
-							fro = self.demes_list[j]
-							self.demes_list[j].migrate_to.append(self.deme_select_list[1].id)
-						if self.demes_list[j].id == int(self.deme_select_list[1].id):
-							to = self.demes_list[j]
+
+					try : 
+						assert entry <= self.deme_select_list[0].size
+						
+					except AssertionError:
+						self.error_migration.set_text('The size of the deme ' + str(self.deme_select_list[0].id) + ' is not big enough.' )
+						
+					else :
+						self.error_migration.set_text(" ")
+						for j in range(0, len(self.demes_list)):
+							if self.demes_list[j].id == int(self.deme_select_list[0].id):
+								fro = self.demes_list[j]
+								self.demes_list[j].migrate_to.append(self.deme_select_list[1].id)
+							if self.demes_list[j].id == int(self.deme_select_list[1].id):
+								to = self.demes_list[j]
 					
 			
-					new_migration = migration.Migration(fro, to, self.entry_amount.get_text() )
-					self.migration_list.append(new_migration)
-					self.drawing_refresh()
+						new_migration = migration.Migration(fro, to, self.entry_amount.get_text() )
+						self.migration_list.append(new_migration)
+						self.drawing_refresh()
 		
 
 	def button_join_clicked(self, widget):
@@ -486,15 +570,41 @@ class Interface:
 		
 			
 			else:
-				self.error_join.set_text(" ")
-				for j in range(0, len(self.demes_list)):
-					if self.demes_list[j].id ==self.deme_select_list[0].id	:
-						self.demes_list[j].join_to.append(self.deme_select_list[1].id	)
-					if self.demes_list[j].id == int(self.deme_select_list[1].id	):
-						self.demes_list[j].is_joined_by.append(self.deme_select_list[0].id	)
+			
+				entry = self.entry_amount2.get_text()
+				try:
+					entry = int(entry)
+					assert entry >= 0
+
+				except ValueError:
+					self.error_join.set_text("You must entry an amount !!!")
+			
+				except AssertionError:
+					self.error_join.set_text("Negative number !!")
+			
+				else:
 				
-				self.nb_join += 1
-				self.drawing_refresh()
+					try: 
+						assert entry <= self.deme_select_list[0].size
+						
+					except AssertionError:
+						self.error_join.set_text('The size of the deme ' + str(self.deme_select_list[0].id) + ' is not big enough.' )
+					
+					else :
+						self.error_join.set_text(" ")
+						for j in range(0, len(self.demes_list)):
+							if self.demes_list[j].id ==self.deme_select_list[0].id	:
+								fro = self.demes_list[j]
+								self.demes_list[j].join_to.append(self.deme_select_list[1].id	)
+							if self.demes_list[j].id == int(self.deme_select_list[1].id	):
+								self.demes_list[j].is_joined_by.append(self.deme_select_list[0].id	)
+								to = self.demes_list[j]
+								
+						self.nb_join += 1
+							
+						new_junction = junction.Junction(fro, to, self.entry_amount2.get_text() )
+						self.junction_list.append(new_junction)
+						self.drawing_refresh()
 				
 	def button_invert_clicked(self, widget):
 		a=self.deme_select_list[0]
@@ -517,6 +627,21 @@ class Interface:
 			i+=1	
 		
 		self.drawing_refresh()
+	
+	def button_delete_one_junction_clicked(self, widget):
+		
+		print str(len(self.junction_list))			
+	
+		i=0
+		while i <  len(self.junction_list):
+			if self.junction_list[i].select:
+				index_start = self.demes_list.index(self.deme_of_id(self.junction_list[i].fro.id))
+				self.demes_list[index_start].join_to.remove(self.junction_list[i].to.id)
+				self.junction_list.remove(self.junction_list[i])
+			i+=1	
+		
+		self.drawing_refresh()
+		nb_join -=1
 			
 	def button_press_event(self, widget, event):
 		w = self.drawing_area.allocation.width
@@ -537,10 +662,14 @@ class Interface:
 			for i in range(0, len(self.migration_list)):
 				if event.y < (i+1)*h/len(self.migration_list) and event.y > i*h/len(self.migration_list):
 					self.migration_list[i].select = not self.migration_list[i].select
-					print str(event.y)
+					
 			
 		elif self.select_selectable.get_active() is 2:
-			print 'i will select a Join'
+			for i in range(0, len(self.junction_list)):
+				if event.y < (i+1)*h/len(self.junction_list) and event.y > i*h/len(self.junction_list):
+					self.junction_list[i].select = not self.junction_list[i].select
+
+					
 		
 		
 		""" Refresh deme_select_list """

@@ -6,204 +6,81 @@
     <property name="width_request">1000</property>
     <property name="height_request">800</property>
     <property name="visible">True</property>
-    <property name="title" translatable="yes">Mon super programme</property>
+    <property name="title" translatable="yes">Bachelor project</property>
     <signal name="destroy" handler="on_mainWindow_destroy"/>
     <child>
-      <object class="GtkVBox" id="coonteneur de la barre de menus">
+      <object class="GtkHBox" id="hbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkMenuBar" id="menubar1">
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkMenuItem" id="File">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">_File</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu1">
-                    <property name="visible">True</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem1">
-                        <property name="label">gtk-new</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem2">
-                        <property name="label">gtk-open</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem3">
-                        <property name="label">gtk-save</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem4">
-                        <property name="label">gtk-save-as</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
-                        <property name="visible">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem5">
-                        <property name="label">gtk-quit</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="Edit">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">_Edit</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu2">
-                    <property name="visible">True</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem6">
-                        <property name="label">gtk-cut</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem7">
-                        <property name="label">gtk-copy</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem8">
-                        <property name="label">gtk-paste</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem9">
-                        <property name="label">gtk-delete</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="View">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">_View</property>
-                <property name="use_underline">True</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="Help">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">_Help</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu3">
-                    <property name="visible">True</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem10">
-                        <property name="label">gtk-about</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkVBox" id="conteneurs barre de statuts">
-            <property name="width_request">750</property>
-            <property name="height_request">800</property>
+          <object class="GtkVBox" id="coonteneur de la barre de menus">
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkHBox" id="Conteneurs horyzontaux">
+              <object class="GtkVBox" id="conteneurs barre de statuts">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkVBox" id="vbox4">
+                  <object class="GtkHBox" id="Conteneurs horyzontaux">
+                    <property name="width_request">700</property>
+                    <property name="height_request">750</property>
                     <property name="visible">True</property>
-                    <property name="border_width">10</property>
-                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkVBox" id="vbox1">
-                        <property name="width_request">400</property>
-                        <property name="height_request">700</property>
+                      <object class="GtkVBox" id="vbox4">
                         <property name="visible">True</property>
+                        <property name="border_width">10</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkLabel" id="label7">
-                            <property name="height_request">5</property>
+                          <object class="GtkVBox" id="vbox1">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">What do you want to select ?</property>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkComboBox" id="select_selectable">
-                            <property name="height_request">1</property>
-                            <property name="visible">True</property>
-                            <property name="model">liststore2</property>
+                            <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext6"/>
-                              <attributes>
-                                <attribute name="text">0</attribute>
-                              </attributes>
+                              <object class="GtkVBox" id="vbox11">
+                                <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel" id="label7">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">What do you want to select ?</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="select_selectable">
+                                    <property name="visible">True</property>
+                                    <property name="resize_mode">immediate</property>
+                                    <property name="model">liststore2</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="cellrenderertext6"/>
+                                      <attributes>
+                                        <attribute name="text">0</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkDrawingArea" id="drawingarea">
+                                <property name="width_request">400</property>
+                                <property name="height_request">650</property>
+                                <property name="visible">True</property>
+                                <signal name="button_release_event" handler="button_press_event"/>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkDrawingArea" id="drawingarea">
-                            <property name="width_request">400</property>
-                            <property name="height_request">450</property>
-                            <property name="visible">True</property>
-                            <signal name="button_release_event" handler="button_press_event"/>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                       </object>
@@ -211,33 +88,143 @@
                         <property name="position">0</property>
                       </packing>
                     </child>
-                  </object>
-                  <packing>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkVBox" id="vbox13">
-                    <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkVBox" id="vbox10">
+                      <object class="GtkVBox" id="vbox13">
                         <property name="visible">True</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkLabel" id="Population Size1">
+                          <object class="GtkVBox" id="vbox10">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">&lt;span size="x-large"&gt; Selected items&lt;/span&gt;</property>
-                            <property name="use_markup">True</property>
-                            <property name="justify">center</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkVBox" id="vbox14">
+                                <property name="width_request">300</property>
+                                <property name="height_request">150</property>
+                                <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel" id="Population Size1">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">&lt;span size="x-large"&gt; Selected items&lt;/span&gt;</property>
+                                    <property name="use_markup">True</property>
+                                    <property name="justify">center</property>
+                                  </object>
+                                  <packing>
+                                    <property name="padding">10</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label2">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">Select two demes</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkHBox" id="hbox4">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <object class="GtkVBox" id="vbox5">
+                                        <property name="visible">True</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkLabel" id="label_deme1">
+                                            <property name="visible">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkVBox" id="vbox9">
+                                        <property name="visible">True</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkArrow" id="arrow1">
+                                            <property name="visible">True</property>
+                                            <property name="shadow_type">etched-in</property>
+                                          </object>
+                                          <packing>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkVBox" id="vbox8">
+                                        <property name="visible">True</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkLabel" id="label_deme2">
+                                            <property name="visible">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="position">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="button_invert">
+                                    <property name="label" translatable="yes">Invert</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="button_invert_clicked"/>
+                                  </object>
+                                  <packing>
+                                    <property name="position">3</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="info_select">
+                                <property name="width_request">300</property>
+                                <property name="height_request">200</property>
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="yalign">0</property>
+                                <property name="xpad">20</property>
+                                <property name="ypad">20</property>
+                                <property name="wrap">True</property>
+                                <property name="max_width_chars">50</property>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
-                            <property name="padding">10</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="info_select">
+                          <object class="GtkLabel" id="info">
+                            <property name="width_request">300</property>
+                            <property name="height_request">400</property>
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
@@ -252,20 +239,42 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="position">0</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox3">
+                    <property name="width_request">700</property>
+                    <property name="height_request">50</property>
+                    <property name="visible">True</property>
                     <child>
-                      <object class="GtkLabel" id="info">
-                        <property name="width_request">400</property>
-                        <property name="height_request">200</property>
+                      <object class="GtkLabel" id="label_command">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <property name="xpad">20</property>
                         <property name="ypad">20</property>
-                        <property name="wrap">True</property>
-                        <property name="max_width_chars">50</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Command line :&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="command_line">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
+                        <property name="xpad">20</property>
+                        <property name="ypad">20</property>
+                        <property name="label" translatable="yes"> </property>
+                        <property name="selectable">True</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -276,405 +285,54 @@
                     <property name="position">1</property>
                   </packing>
                 </child>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkVBox" id="conteneurs des commandes">
+            <property name="width_request">300</property>
+            <property name="height_request">800</property>
+            <property name="visible">True</property>
+            <property name="border_width">10</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkVBox" id="vbox6">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkVBox" id="conteneurs des commandes">
-                    <property name="width_request">400</property>
-                    <property name="height_request">743</property>
+                  <object class="GtkLabel" id="Population Size">
                     <property name="visible">True</property>
-                    <property name="border_width">10</property>
-                    <property name="orientation">vertical</property>
-                    <child>
-                      <object class="GtkVBox" id="vbox6">
-                        <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GtkLabel" id="Population Size">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">&lt;span size="x-large"&gt;Population Size&lt;/span&gt;</property>
-                            <property name="use_markup">True</property>
-                            <property name="justify">center</property>
-                          </object>
-                          <packing>
-                            <property name="padding">10</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkEntry" id="entry_popsize">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="invisible_char">&#x25CF;</property>
-                            <signal name="activate" handler="entry_popsize_activate"/>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="error_popsize">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes"> </property>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkVBox" id="vbox7">
-                        <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GtkLabel" id="Demes">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">&lt;span size="x-large"&gt;Demes&lt;/span&gt;</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                          <packing>
-                            <property name="padding">10</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="nb_demes">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">Change the number of demes</property>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkHBox" id="hbox1">
-                            <property name="visible">True</property>
-                            <child>
-                              <object class="GtkButton" id="deme_minus">
-                                <property name="label" translatable="yes">-</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="xalign">0.50999999046325684</property>
-                                <property name="yalign">0.49000000953674316</property>
-                                <signal name="clicked" handler="deme_minus_clicked"/>
-                              </object>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="deme_plus">
-                                <property name="label" translatable="yes">+</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="deme_plus_clicked"/>
-                              </object>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="error_demes">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes"> </property>
-                          </object>
-                          <packing>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label_deme">
-                            <property name="visible">True</property>
-                            <property name="xpad">6</property>
-                          </object>
-                          <packing>
-                            <property name="position">4</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkHBox" id="hbox2">
-                            <property name="visible">True</property>
-                            <child>
-                              <object class="GtkLabel" id="change_deme_size">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes"> Change the size:</property>
-                              </object>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkEntry" id="entry_deme_size">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
-                                <signal name="activate" handler="entry_deme_size_activate"/>
-                              </object>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">5</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="error_demesize">
-                            <property name="visible">True</property>
-                          </object>
-                          <packing>
-                            <property name="position">6</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkVBox" id="vbox14">
-                        <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GtkLabel" id="label2">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">Select two demes</property>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkHBox" id="hbox4">
-                            <property name="visible">True</property>
-                            <child>
-                              <object class="GtkVBox" id="vbox5">
-                                <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
-                                <child>
-                                  <object class="GtkLabel" id="label_deme1">
-                                    <property name="visible">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkVBox" id="vbox9">
-                                <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
-                                <child>
-                                  <object class="GtkArrow" id="arrow1">
-                                    <property name="visible">True</property>
-                                    <property name="shadow_type">etched-in</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkVBox" id="vbox8">
-                                <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
-                                <child>
-                                  <object class="GtkLabel" id="label_deme2">
-                                    <property name="visible">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button_invert">
-                            <property name="label" translatable="yes">Invert</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <signal name="clicked" handler="button_invert_clicked"/>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkVBox" id="vbox2">
-                        <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GtkLabel" id="migration">
-                            <property name="visible">True</property>
-                            <property name="yalign">0.41999998688697815</property>
-                            <property name="label" translatable="yes">&lt;span size="x-large"&gt;Migration (in blue)&lt;/span&gt;</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                          <packing>
-                            <property name="padding">10</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkHBox" id="hbox5">
-                            <property name="visible">True</property>
-                            <child>
-                              <object class="GtkLabel" id="label3">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Amount:</property>
-                              </object>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkEntry" id="entry_amount">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
-                                <signal name="activate" handler="entry_amount_activate"/>
-                              </object>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button_migration">
-                            <property name="label" translatable="yes">Ok</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <signal name="clicked" handler="button_migration_clicked"/>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="error_migration">
-                            <property name="visible">True</property>
-                          </object>
-                          <packing>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label1">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">Delete the selected migration</property>
-                          </object>
-                          <packing>
-                            <property name="position">4</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button_delete_one_migration">
-                            <property name="label" translatable="yes">Ok</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="relief">half</property>
-                            <property name="image_position">bottom</property>
-                            <signal name="clicked" handler="button_delete_one_migration_clicked"/>
-                          </object>
-                          <packing>
-                            <property name="position">5</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button_delete_migrations">
-                            <property name="label" translatable="yes">Delete all migrations</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <signal name="clicked" handler="button_delete_migrations_clicked"/>
-                          </object>
-                          <packing>
-                            <property name="position">6</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkVBox" id="vbox3">
-                        <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GtkLabel" id="label4">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">&lt;span size="x-large"&gt;Join&lt;/span&gt;</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button_join">
-                            <property name="label" translatable="yes">Ok</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="image_position">bottom</property>
-                            <signal name="clicked" handler="button_join_clicked"/>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="error_join">
-                            <property name="visible">True</property>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">4</property>
-                      </packing>
-                    </child>
+                    <property name="label" translatable="yes">&lt;span size="x-large"&gt;Population Size&lt;/span&gt;</property>
+                    <property name="use_markup">True</property>
+                    <property name="justify">center</property>
+                  </object>
+                  <packing>
+                    <property name="padding">10</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_popsize">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">&#x25CF;</property>
+                    <signal name="activate" handler="entry_popsize_activate"/>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="error_popsize">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes"> </property>
                   </object>
                   <packing>
                     <property name="position">2</property>
@@ -686,18 +344,234 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox3">
-                <property name="width_request">400</property>
-                <property name="height_request">50</property>
+              <object class="GtkVBox" id="vbox7">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkLabel" id="label_command">
+                  <object class="GtkLabel" id="Demes">
                     <property name="visible">True</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
-                    <property name="xpad">20</property>
-                    <property name="ypad">20</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Command line :&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;span size="x-large"&gt;Demes&lt;/span&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="padding">10</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="nb_demes">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Change the number of demes</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox2">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="deme_minus">
+                        <property name="label" translatable="yes">-</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="xalign">0.50999999046325684</property>
+                        <property name="yalign">0.49000000953674316</property>
+                        <signal name="clicked" handler="deme_minus_clicked"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="deme_plus">
+                        <property name="label" translatable="yes">+</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="deme_plus_clicked"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="error_demes">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes"> </property>
+                  </object>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label_deme">
+                    <property name="visible">True</property>
+                    <property name="xpad">6</property>
+                  </object>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox5">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkLabel" id="change_deme_size">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes"> Change the size:</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="entry_deme_size">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                        <signal name="activate" handler="entry_deme_size_activate"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="error_demesize">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox2">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="migration">
+                    <property name="visible">True</property>
+                    <property name="yalign">0.41999998688697815</property>
+                    <property name="label" translatable="yes">&lt;span size="x-large"&gt;Migration&lt;/span&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="padding">10</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox6">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkLabel" id="label3">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Amount:</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="entry_amount">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                        <signal name="activate" handler="entry_amount_activate"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_migration">
+                    <property name="label" translatable="yes">Ok</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="button_migration_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="error_migration">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Delete the selected migration</property>
+                  </object>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_delete_one_migration">
+                    <property name="label" translatable="yes">Ok</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="relief">half</property>
+                    <property name="image_position">bottom</property>
+                    <signal name="clicked" handler="button_delete_one_migration_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_delete_migrations">
+                    <property name="label" translatable="yes">Delete all migrations</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="button_delete_migrations_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox3">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="label4">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&lt;span size="x-large"&gt;Join&lt;/span&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                   <packing>
@@ -705,24 +579,93 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="command_line">
-                    <property name="width_request">600</property>
-                    <property name="height_request">50</property>
+                  <object class="GtkHBox" id="hbox7">
                     <property name="visible">True</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
-                    <property name="xpad">20</property>
-                    <property name="ypad">20</property>
-                    <property name="label" translatable="yes"> </property>
-                    <property name="selectable">True</property>
+                    <child>
+                      <object class="GtkLabel" id="label5">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Amount:</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="entry_amount2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                        <signal name="activate" handler="entry_amount2_activate"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="position">1</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkButton" id="button_join">
+                    <property name="label" translatable="yes">Ok</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image_position">bottom</property>
+                    <signal name="clicked" handler="button_join_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="error_join">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label6">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Delete the selected junction</property>
+                  </object>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_delete_one_junction">
+                    <property name="label" translatable="yes">Ok</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="relief">half</property>
+                    <property name="image_position">bottom</property>
+                    <signal name="clicked" handler="button_delete_one_junction_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_delete_junctions">
+                    <property name="label" translatable="yes">Delete all junctions</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="yalign">0.40999999642372131</property>
+                    <signal name="clicked" handler="button_delete_junctions_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
               </object>
               <packing>
-                <property name="position">1</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>
