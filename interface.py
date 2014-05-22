@@ -94,15 +94,15 @@ class Interface:
 	def info_refresh(self):
 		
 		""" command line refresh """
-		line = '-ms ' + str(self.pop_size) 
+		line = '-ms ' + str(self.pop_size) + ' ' + str(len(self.demes_list)) + ' -t 1'
 		
 		if len(self.demes_list) > 0:
-			line += ' -I '
+			line += ' -I ' + str(len(self.demes_list)) + ' '
 			
 			for element in self.demes_list:
+				
 				line += str(element.size) + ' '
 			
-			line += str(len(self.demes_list))
 			
 		if len(self.migration_list) > 0:
 			
@@ -117,7 +117,7 @@ class Interface:
 			
 			for i in range(0, len(self.junction_list)):
 				line += ' -ej '
-				line += ' t '
+				line += ' 1 '
 				line += str(self.junction_list[i].fro.id) + ' ' + str(self.junction_list[i].to.id)
 				
 				
@@ -148,7 +148,7 @@ class Interface:
  				chaine += 'There is a migration from the deme '+ str(self.migration_list[i].fro.id) + ' to the deme '+ str(self.migration_list[i].to.id) + ' \n with an amount of '+str(self.migration_list[i].amount) + '. \n\n'
 		
 		if len(self.junction_list) == 0:
-			chaine += 'There is no junctions. \n'
+			chaine += 'There is no junction. \n'
 			
 		else:
 			chaine += 'There are ' + str(len(self.junction_list)) + ' junctions.\n \n'
@@ -291,7 +291,8 @@ class Interface:
 		h = self.drawing_area.allocation.height
 		
 		if param > 0:
-			nb_arrow=0
+			nb_arrow=len(self.junction_list)-1
+			arrow=0
 			for i in range(0, param):
 				cr.save()
 				cr.set_line_width(5)
@@ -306,10 +307,10 @@ class Interface:
 					cr.stroke()
 				else:
 					
-					cr.rectangle((w*((2*i)+1))/(2*param)-(w/(param*8)), h*(nb_arrow+1)/(self.nb_join+1), w/(param*4), (9*h/10)-(h*(nb_arrow+1)/(self.nb_join+1)))
+					cr.rectangle((w*((2*i)+1))/(2*param)-(w/(param*8)), h*(arrow+1)/(self.nb_join+1), w/(param*4), (9*h/10)-(h*(arrow+1)/(self.nb_join+1)))
 					cr.stroke()
-					cr.move_to((w*((2*i)+1))/(2*param)-(w/(param*8)),h*(nb_arrow+1)/(self.nb_join+1))
-				
+					cr.move_to((w*((2*i)+1))/(2*param)-(w/(param*8)),h*(arrow+1)/(self.nb_join+1))
+					arrow+=1
 				
 			""" dessin join """
 					
@@ -341,7 +342,7 @@ class Interface:
 				cr.restore()
 			
 			
-				nb_arrow += 1
+				nb_arrow -= 1
 					
 				
 				cr.restore()
@@ -640,8 +641,9 @@ class Interface:
 				self.junction_list.remove(self.junction_list[i])
 			i+=1	
 		
+		
+		self.nb_join -=1
 		self.drawing_refresh()
-		nb_join -=1
 			
 	def button_press_event(self, widget, event):
 		w = self.drawing_area.allocation.width
@@ -667,7 +669,7 @@ class Interface:
 		elif self.select_selectable.get_active() is 2:
 			for i in range(0, len(self.junction_list)):
 				if event.y < (i+1)*h/len(self.junction_list) and event.y > i*h/len(self.junction_list):
-					self.junction_list[i].select = not self.junction_list[i].select
+					self.junction_list[len(self.junction_list)-i -1].select = not self.junction_list[len(self.junction_list)-i -1].select
 
 					
 		
